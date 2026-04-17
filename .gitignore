@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+shared/data/
+shared/jobs/
+*.sqlite3

@@ -1,0 +1,58 @@
+name: Deploy scorecraft
+
+on:
+  push:
+    branches: ["main", "master"]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-scorecraft
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, linux, satoori]
+    env:
+      DEPLOY_ROOT: /opt/protfolio
+      PROJECT_NAME: scorecraft
+      DOCKER_SUDO: "false"
+      SCORECRAFT_APP_PORT: ${{ vars.SCORECRAFT_APP_PORT }}
+      SCORECRAFT_ROOT_PATH: ${{ vars.SCORECRAFT_ROOT_PATH }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify Docker
+        run: |
+          docker --version
+          docker compose version
+
+      - name: Prepare runtime env
+        shell: bash
+        run: |
+          PROJECT_DIR="$DEPLOY_ROOT/$PROJECT_NAME"
+          mkdir -p "$PROJECT_DIR"
+
+          APP_PORT="${SCORECRAFT_APP_PORT:-7086}"
+          ROOT_PATH="${SCORECRAFT_ROOT_PATH:-/scorecraft}"
+
+          cat > "$PROJECT_DIR/.env" <<EOF_INNER
+          APP_PORT=${APP_PORT}
+          ROOT_PATH=${ROOT_PATH}
+          EOF_INNER
+
+      - name: Deploy
+        run: bash scripts/deploy_scorecraft.sh
+
+      - name: Smoke check
+        shell: bash
+        run: |
+          APP_PORT="${SCORECRAFT_APP_PORT:-7086}"
+          for attempt in {1..20}; do
+            if curl -fsS "http://127.0.0.1:${APP_PORT}/health"; then
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "::error::scorecraft health check did not succeed in time"
+          exit 1

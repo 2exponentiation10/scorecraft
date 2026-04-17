@@ -1,0 +1,14 @@
+services:
+  scorecraft-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: scorecraft-app
+    environment:
+      APP_DATA_DIR: /data
+      ROOT_PATH: ${ROOT_PATH:-/scorecraft}
+    volumes:
+      - ./shared/data:/data
+    ports:
+      - "${APP_PORT:-7086}:8000"
+    restart: unless-stopped
