@@ -26,7 +26,7 @@ rsync -a --delete \
   --exclude ".env" \
   --exclude ".venv" \
   --exclude "__pycache__" \
-  --exclude "shared/data" \
+  --exclude "shared" \
   ./ "$PROJECT_DIR"/
 
 cd "$PROJECT_DIR"
