@@ -133,15 +133,25 @@ def chord_symbol_from_chord(ch: m21chord.Chord) -> str:
 
 
 def analyze_score(midi_path: Path, work_dir: Path) -> tuple[Path, Path, dict[str, Any]]:
-    score = converter.parse(str(midi_path))
+    parsed = converter.parse(str(midi_path))
+    if isinstance(parsed, stream.Score):
+        score = parsed
+    elif isinstance(parsed, stream.Part):
+        score = stream.Score()
+        score.insert(0, parsed)
+    else:
+        score = stream.Score()
+        score.insert(0, parsed)
+
     if not score.recurse().getElementsByClass(meter.TimeSignature):
         score.insert(0, meter.TimeSignature("4/4"))
     if not score.recurse().getElementsByClass(tempo.MetronomeMark):
         score.insert(0, tempo.MetronomeMark(number=96))
 
-    chordified = score.chordify()
+    primary_part = score.parts[0] if score.parts else score
+    chordified = primary_part.chordify()
     chord_events: list[dict[str, Any]] = []
-    for m in chordified.parts[0].getElementsByClass(stream.Measure):
+    for m in chordified.getElementsByClass(stream.Measure):
         measure_label = m.measureNumber or len(chord_events) + 1
         inserted = False
         for element in m.notes:
@@ -164,7 +174,7 @@ def analyze_score(midi_path: Path, work_dir: Path) -> tuple[Path, Path, dict[str
     notes = list(score.recurse().notes)
     summary = {
         "noteCount": len([n for n in notes if isinstance(n, (note.Note, m21chord.Chord))]),
-        "estimatedMeasures": len(list(score.parts[0].getElementsByClass(stream.Measure))) if score.parts else 0,
+        "estimatedMeasures": len(list(primary_part.getElementsByClass(stream.Measure))),
         "partCount": len(score.parts) if score.parts else 1,
         "chordCount": len(chord_events),
     }
