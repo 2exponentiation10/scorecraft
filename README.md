@@ -32,6 +32,10 @@ Open:
 - http://127.0.0.1:7086/
 - http://127.0.0.1:7086/docs
 
+Production:
+- https://scorecraft.protfolio.store/
+- https://scorecraft.protfolio.store/docs
+
 ## Limitations
 - Best quality for piano solo or simple melodic material.
 - Polyphonic live recordings still require manual cleanup.

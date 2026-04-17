@@ -34,7 +34,7 @@ jobs:
           mkdir -p "$PROJECT_DIR"
 
           APP_PORT="${SCORECRAFT_APP_PORT:-7086}"
-          ROOT_PATH="${SCORECRAFT_ROOT_PATH:-/scorecraft}"
+          ROOT_PATH="${SCORECRAFT_ROOT_PATH-}"
 
           cat > "$PROJECT_DIR/.env" <<EOF_INNER
           APP_PORT=${APP_PORT}
