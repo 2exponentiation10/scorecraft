@@ -80,6 +80,7 @@ def normalize_audio(input_path: Path, work_dir: Path) -> tuple[Path, float | Non
 
 
 def run_basic_pitch(audio_path: Path, work_dir: Path) -> Path:
+    from basic_pitch import ICASSP_2022_MODEL_PATH
     from basic_pitch.inference import predict_and_save
 
     output_dir = work_dir / "basic_pitch"
@@ -87,6 +88,7 @@ def run_basic_pitch(audio_path: Path, work_dir: Path) -> Path:
     predict_and_save(
         [str(audio_path)],
         str(output_dir),
+        model_or_model_path=ICASSP_2022_MODEL_PATH,
         save_midi=True,
         sonify_midi=False,
         save_model_outputs=False,
