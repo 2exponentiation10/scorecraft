@@ -13,7 +13,7 @@ jobs:
   deploy:
     runs-on: [self-hosted, linux, satoori]
     env:
-      DEPLOY_ROOT: /opt/protfolio
+      DEPLOY_ROOT: /home/lsy
       PROJECT_NAME: scorecraft
       DOCKER_SUDO: "false"
       SCORECRAFT_APP_PORT: ${{ vars.SCORECRAFT_APP_PORT }}
