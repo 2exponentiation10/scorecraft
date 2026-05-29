@@ -9,7 +9,7 @@ from typing import Annotated
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from .config import APP_DESCRIPTION, APP_TITLE, ROOT_PATH, UPLOAD_DIR
@@ -104,6 +104,11 @@ def process_job(job_id: str) -> None:
 @app.get("/", response_class=HTMLResponse)
 async def index() -> HTMLResponse:
     return HTMLResponse((STATIC_DIR / "index.html").read_text(encoding="utf-8"))
+
+
+@app.head("/")
+async def index_head() -> Response:
+    return Response(status_code=200)
 
 
 @app.get("/health")
