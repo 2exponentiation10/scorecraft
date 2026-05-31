@@ -1,14 +1,14 @@
 # 2026-04-17 Scorecraft launch notes
 
 ## What shipped
-- New AI score drafting service at `https://protfolio.store/scorecraft/`
-- FastAPI backend with automatic docs at `https://protfolio.store/scorecraft/docs`
+- New AI score drafting service at `https://scorecraft.protfolio.store/`
+- FastAPI backend with automatic docs at `https://scorecraft.protfolio.store/docs`
 - Input support for YouTube links and uploaded audio files
 - Background job execution for transcription
 - MIDI output, MusicXML export, and chord timeline JSON
 - Browser score preview via OpenSheetMusicDisplay
 - GitHub Actions deployment on self-hosted runner
-- Nginx reverse proxy under the existing root domain
+- Nginx reverse proxy under `scorecraft.protfolio.store`
 
 ## Processing pipeline
 1. User submits a YouTube URL or an audio file.

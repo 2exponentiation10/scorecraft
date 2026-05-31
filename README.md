@@ -36,6 +36,10 @@ Production:
 - https://scorecraft.protfolio.store/
 - https://scorecraft.protfolio.store/docs
 
+Deployment target:
+- `/opt/protfolio/scorecraft`
+- GitHub Actions self-hosted runner `linux`, `satoori`
+
 ## Limitations
 - Best quality for piano solo or simple melodic material.
 - Polyphonic live recordings still require manual cleanup.
