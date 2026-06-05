@@ -178,6 +178,9 @@ function startPolling(jobId) {
 
 jobForm.addEventListener('submit', async (event) => {
   event.preventDefault();
+  const submitBtn = jobForm.querySelector('.primary-button');
+  const origLabel = submitBtn ? submitBtn.textContent : '';
+  if (submitBtn) { submitBtn.textContent = '생성 중...'; submitBtn.disabled = true; }
   setFeedback('작업을 생성하고 있습니다.', 'info');
   const formData = new FormData(jobForm);
   const hasYoutube = (formData.get('youtube_url') || '').toString().trim();
@@ -200,6 +203,8 @@ jobForm.addEventListener('submit', async (event) => {
     startPolling(payload.id);
   } catch (error) {
     setFeedback(error.message, 'error');
+  } finally {
+    if (submitBtn) { submitBtn.textContent = origLabel; submitBtn.disabled = false; }
   }
 });
 

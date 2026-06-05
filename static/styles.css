@@ -139,3 +139,177 @@ h1, h2, h3 { margin: 0; }
   .hero, .grid, .result-layout { grid-template-columns: 1fr; }
   .shell { width: min(100% - 20px, 1180px); padding: 20px 0 48px; }
 }
+
+
+/* =============================================
+   Entrance animation for result card
+   ============================================= */
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.result-card:not(.hidden) {
+  animation: card-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* =============================================
+   Buttons — hover + press states
+   ============================================= */
+
+.primary-button,
+.ghost-button,
+.download-link {
+  transition: background 180ms ease, transform 140ms ease, box-shadow 180ms ease, opacity 180ms ease;
+}
+
+.primary-button:hover {
+  background: linear-gradient(135deg, #2048e8, #4a6dff);
+  box-shadow: 0 10px 28px rgba(49, 94, 251, 0.35);
+}
+
+.primary-button:active,
+.ghost-button:active,
+.download-link:active {
+  transform: scale(0.97);
+}
+
+.ghost-button:hover,
+.download-link:hover {
+  background: rgba(49, 94, 251, 0.18);
+}
+
+/* =============================================
+   Form inputs — focus transition
+   ============================================= */
+
+.field input {
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+  outline: none;
+}
+
+.field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(49, 94, 251, 0.15);
+}
+
+/* =============================================
+   Job list items — hover lift
+   ============================================= */
+
+.job-item {
+  transition: box-shadow 200ms ease, border-color 200ms ease, transform 200ms ease;
+}
+
+.job-item:hover {
+  box-shadow: 0 8px 24px rgba(19, 33, 68, 0.1);
+  border-color: #b8c8f4;
+  transform: translateY(-1px);
+}
+
+/* =============================================
+   Running status — pulse animation
+   ============================================= */
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+
+.status-pill.running {
+  animation: status-pulse 1.6s ease-in-out infinite;
+}
+
+/* =============================================
+   Summary tiles — hover lift
+   ============================================= */
+
+.summary-tile {
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+
+.summary-tile:hover {
+  box-shadow: 0 8px 20px rgba(19, 33, 68, 0.1);
+  transform: translateY(-2px);
+}
+
+/* =============================================
+   Hero meta panels — hover lift
+   ============================================= */
+
+.hero-meta > div {
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+
+.hero-meta > div:hover {
+  box-shadow: 0 8px 20px rgba(19, 33, 68, 0.1);
+  transform: translateY(-2px);
+}
+
+/* =============================================
+   Chord items — hover highlight
+   ============================================= */
+
+.chord-item {
+  transition: background 150ms ease;
+  border-radius: 8px;
+  margin: 0 -8px;
+  padding: 10px 8px;
+}
+
+.chord-item:hover {
+  background: #f0f4ff;
+}
+
+/* =============================================
+   Progress bar — shimmer effect when running
+   ============================================= */
+
+@keyframes progress-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+#progress-fill {
+  background: linear-gradient(
+    90deg,
+    var(--accent) 0%,
+    #8ea5ff 40%,
+    var(--accent) 60%,
+    #8ea5ff 100%
+  );
+  background-size: 200% 100%;
+  animation: progress-shimmer 2s linear infinite;
+}
+
+/* =============================================
+   Scrollbar
+   ============================================= */
+
+.chord-list::-webkit-scrollbar,
+.score-viewer::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chord-list::-webkit-scrollbar-track,
+.score-viewer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chord-list::-webkit-scrollbar-thumb,
+.score-viewer::-webkit-scrollbar-thumb {
+  background: #c8d4ee;
+  border-radius: 99px;
+}
+
+/* =============================================
+   Refresh button — spin icon on click
+   ============================================= */
+
+.ghost-button#refresh-jobs {
+  font-size: 13px;
+  padding: 8px 14px;
+  min-height: unset;
+  border-radius: 12px;
+}
