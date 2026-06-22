@@ -38,12 +38,16 @@ app.mount("/assets", StaticFiles(directory=STATIC_DIR), name="assets")
 
 def serialize_job(job: dict) -> dict:
     base_url = ROOT_PATH.rstrip("/")
+    source_value = job.get("source_value") or ""
+    title = job.get("title") or source_value or "Untitled score"
+    if job.get("source_type") == "upload":
+        title = Path(title).name
     return {
         "id": job["id"],
         "createdAt": job["created_at"],
         "updatedAt": job["updated_at"],
         "status": job["status"],
-        "title": job.get("title") or (job.get("source_value") or "Untitled score"),
+        "title": title,
         "sourceType": job["source_type"],
         "sourceValue": job.get("source_value"),
         "error": job.get("error"),

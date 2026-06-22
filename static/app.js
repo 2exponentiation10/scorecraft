@@ -36,6 +36,15 @@ function formatDate(value) {
   return Number.isNaN(date.getTime()) ? value : date.toLocaleString('ko-KR');
 }
 
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
 function renderJobs(jobs) {
   jobsListEl.innerHTML = '';
   jobsEmptyEl.style.display = jobs.length ? 'none' : 'block';
@@ -45,12 +54,12 @@ function renderJobs(jobs) {
     item.innerHTML = `
       <div class="job-item-head">
         <div>
-          <h3>${job.title || '새 작업'}</h3>
-          <div class="job-meta">${formatDate(job.createdAt)}</div>
+          <h3>${escapeHtml(job.title || '새 작업')}</h3>
+          <div class="job-meta">${escapeHtml(formatDate(job.createdAt))}</div>
         </div>
-        <span class="status-pill ${job.status}">${prettyStatus(job.status)}</span>
+        <span class="status-pill ${escapeHtml(job.status)}">${escapeHtml(prettyStatus(job.status))}</span>
       </div>
-      <p class="job-meta">${job.progressLabel || ''}</p>
+      <p class="job-meta">${escapeHtml(job.progressLabel || '')}</p>
     `;
     item.addEventListener('click', () => loadJob(job.id));
     jobsListEl.appendChild(item);
@@ -178,10 +187,6 @@ function startPolling(jobId) {
 
 jobForm.addEventListener('submit', async (event) => {
   event.preventDefault();
-  const submitBtn = jobForm.querySelector('.primary-button');
-  const origLabel = submitBtn ? submitBtn.textContent : '';
-  if (submitBtn) { submitBtn.textContent = '생성 중...'; submitBtn.disabled = true; }
-  setFeedback('작업을 생성하고 있습니다.', 'info');
   const formData = new FormData(jobForm);
   const hasYoutube = (formData.get('youtube_url') || '').toString().trim();
   const file = formData.get('audio_file');
@@ -189,6 +194,11 @@ jobForm.addEventListener('submit', async (event) => {
     setFeedback('유튜브 링크 또는 오디오 파일 중 하나를 입력해 주세요.', 'error');
     return;
   }
+
+  const submitBtn = jobForm.querySelector('.primary-button');
+  const origLabel = submitBtn ? submitBtn.textContent : '';
+  if (submitBtn) { submitBtn.textContent = '생성 중...'; submitBtn.disabled = true; }
+  setFeedback('작업을 생성하고 있습니다.', 'info');
   try {
     const response = await fetch(apiUrl('./api/jobs'), { method: 'POST', body: formData });
     const payload = await response.json();
